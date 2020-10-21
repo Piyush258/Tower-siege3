@@ -7,6 +7,8 @@ const Constraint = Matter.Constraint;
 var polygon, poly_img;
 var score = 0;
 
+var backgroundImg;
+
 function preload()
 {
 	poly_img = loadImage("hexagon.png");
@@ -58,7 +60,9 @@ function setup() {
 }
 
 function draw() {
-	background(100);
+	if (backgroundImg){
+		background(backgroundImg);
+	}
   rectMode(CENTER);
   ground.display();
   stand1.display();
@@ -122,6 +126,21 @@ function keyPressed(){
 		Matter.Body.setPosition(polygon, {x:200,y:200});
 		sling.attach(polygon);
 	}
+}
+async function getBackgroundImg(){
+    var response = await fetch("https://worldtimeapi.org/api/timezone/Asia/Kolkata");
+    var responseJSON = await response.json();
+
+    var datetime = responseJSON.datetime;
+    var hour = datetime.slice(11,13);
+    
+    if(hour>=06 && hour<=19){
+        backgroundImg = "skyblue";
+    }
+    else{
+		backgroundImg = "grey";
+	}
+	
 }
 
 
